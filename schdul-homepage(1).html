@@ -1,0 +1,830 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Schdul Homepage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600&display=swap">
+<style>
+html,body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+/* Layout: a ruled sheet. Full-width hairlines divide the page into bands; inside each band a 1320px column holds a wide left block and a narrower right block that stack on a phone. */
+:root{
+  --bg:#f7f6f2; --ink:#20201d; --muted:#5c5c55; --line:#cbc9c1; --accent:#bb371b; --on-accent:#ffffff; --spark:#ff633d;
+  --m-body:#e6e4dc; --m-base:#1c1c1c; --m-dark:#20201d; --m-hot:#e8501f; --m-idle:#a09e95; --m-shadow:0.2;
+  --display:'IBM Plex Sans Condensed','Arial Narrow',sans-serif;
+  --body:'IBM Plex Sans','Helvetica Neue',sans-serif;
+  --mono:'IBM Plex Mono',Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#171717; --ink:#eeede8; --muted:#b6b5b1; --line:#464643; --accent:#ff633d; --on-accent:#171717; --spark:#bb371b; --m-body:#e4e2da; --m-base:#3a3a3a; --m-dark:#101010; --m-hot:#ff633d; --m-idle:#8a8880; --m-shadow:0.45; color-scheme:dark } }
+:root[data-theme="dark"]{ --bg:#171717; --ink:#eeede8; --muted:#b6b5b1; --line:#464643; --accent:#ff633d; --on-accent:#171717; --spark:#bb371b; --m-body:#e4e2da; --m-base:#3a3a3a; --m-dark:#101010; --m-hot:#ff633d; --m-idle:#8a8880; --m-shadow:0.45; color-scheme:dark }
+
+html{scroll-behavior:smooth;scroll-padding-top:16px}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
+.s *{box-sizing:border-box}
+.s a{color:var(--ink);text-underline-offset:5px}
+.s a:hover{color:var(--accent)}
+.s :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1320px;margin:0 auto;padding-inline:24px}
+.band{border-bottom:1px solid var(--ink)}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.muted{color:var(--muted)}
+.big{margin:0;font-family:var(--display);font-weight:600;text-transform:uppercase;font-size:clamp(36px,5vw,68px);line-height:.98;letter-spacing:-.01em;text-wrap:balance}
+.eyebrow{display:block;font-family:var(--mono);font-weight:500;font-size:13px;letter-spacing:.06em;color:var(--muted);line-height:1.5;margin-bottom:14px;text-transform:uppercase}
+.h3{margin:0;font-family:var(--display);font-weight:600;font-size:28px;line-height:1.1;text-wrap:balance}
+.split{display:flex;flex-wrap:wrap;gap:16px 64px;align-items:flex-end}
+.split > :first-child{flex:2 1 420px;min-width:0}
+.split > :last-child{flex:1 1 300px;min-width:0;max-width:440px;margin:0;font-size:18px}
+
+.strip{background:var(--ink);color:var(--bg)}
+.strip .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 24px;padding-block:9px}
+.top .wrap{display:flex;flex-wrap:wrap;align-items:stretch;justify-content:space-between}
+.brand{font-family:var(--display);font-weight:600;font-size:30px;text-decoration:none;padding:14px 28px 14px 0;display:flex;align-items:center}
+.brand i,.foot-brand i{font-style:normal;color:var(--accent)}
+.nav{display:flex;flex-wrap:wrap;align-items:stretch;font-family:var(--mono);font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+.nav a{display:flex;align-items:center;gap:10px;padding:12px 20px;min-height:48px;border-left:1px solid var(--ink);text-decoration:none}
+.nav a span{color:var(--muted)}
+.nav a.go{background:var(--ink);color:var(--bg)}
+.nav a.go span{color:var(--spark)}
+.nav a.go:hover{color:var(--bg);opacity:.88}
+
+.hero .wrap{display:flex;flex-wrap:wrap;gap:48px 64px;align-items:flex-end;padding-block:56px 64px}
+.hero-copy{flex:1 1 520px;min-width:0}
+.hero h1{margin:0;font-family:var(--display);font-weight:600;text-transform:uppercase;font-size:clamp(46px,8.2vw,116px);line-height:.94;letter-spacing:-.015em}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero-copy > p{margin:28px 0 0;max-width:500px;font-size:19px;line-height:1.55}
+.cta-row{margin-top:32px;display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px}
+.s a.btn{display:inline-flex;align-items:center;gap:14px;min-height:56px;padding:0 26px;background:var(--ink);color:var(--bg);text-decoration:none;font-weight:500}
+.s a.btn:hover{color:var(--bg);opacity:.88}
+.s a.btn:active{transform:translateY(1px)}
+.cta-row span{font-size:15px;color:var(--muted);max-width:260px;line-height:1.45}
+
+.sheet{flex:1 1 400px;min-width:0;max-width:520px;border:1px solid var(--ink)}
+.sheet-head{display:flex;justify-content:space-between;gap:16px;padding:10px 16px;border-bottom:1px solid var(--ink)}
+.row{display:grid;grid-template-columns:1.1fr 1fr 1.25fr;border-bottom:1px solid var(--line)}
+.row > *{padding:15px 12px;font-size:15px;border-left:1px solid var(--line);display:flex;align-items:center;gap:8px;min-width:0}
+.row > :first-child{padding-left:16px;border-left:0;font-weight:600;font-size:18px}
+.row.cols{border-bottom-color:var(--ink)}
+.row.cols > *{padding-block:7px;font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.row.hold{background:var(--accent);color:var(--on-accent)}
+.row.hold > *{border-left-color:color-mix(in srgb,var(--on-accent) 40%,transparent)}
+.row.hold > :last-child{font-weight:600}
+.row.last{border-bottom-color:var(--ink)}
+.sheet-foot{padding:14px 16px 16px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 16px}
+.sheet-foot b{font-weight:600;font-size:16px}
+@media (prefers-reduced-motion: no-preference){
+  .sheet .row:not(.cols){animation:fill .5s both}
+  .sheet .row:nth-child(4){animation-delay:.25s}.sheet .row:nth-child(5){animation-delay:.5s}
+  .sheet .row.hold{animation:fill .5s both, flag .6s 1.1s both}
+  @keyframes fill{from{opacity:.25}to{opacity:1}}
+  @keyframes flag{from{background:var(--bg);color:var(--ink)}to{background:var(--accent);color:var(--on-accent)}}
+}
+
+.answer .wrap{display:flex;flex-wrap:wrap}
+.answer h2{flex:1 1 260px;margin:0;padding:28px 24px 0 0;font-weight:500;line-height:1.5}
+.answer p{flex:3 1 480px;min-width:0;margin:0;padding:28px 0 32px;font-size:clamp(20px,2.1vw,27px);line-height:1.4;max-width:900px}
+
+.pad{padding-block:80px 72px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));border-top:1px solid var(--ink);border-left:1px solid var(--ink);margin-top:44px}
+.grid3 > *{border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:24px 24px 30px;margin:0}
+.pair{margin:20px 0 0;display:grid;grid-template-columns:88px 1fr;font-size:16px;line-height:1.45}
+.pair dt,.pair dd{margin:0;padding:10px 0;border-top:1px solid var(--line)}
+.pair dt{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:13px}
+.pair dt.floor{color:var(--accent)}
+.pair dd.floor{font-weight:500}
+.ask .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 32px;padding-block:20px}
+.ask p{margin:0;font-size:18px}
+.ask a{font-weight:500;min-height:44px;display:inline-flex;align-items:center}
+
+.steps{list-style:none;margin:48px 0 56px;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
+.steps li{border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:20px 24px 28px}
+.steps li b{display:block;font-family:var(--display);font-weight:600;font-size:30px;text-transform:uppercase}
+.steps li:last-child{background:var(--ink);color:var(--bg)}
+.steps p{margin:8px 0 0;font-size:16px}
+.tablebox{overflow-x:auto;border:1px solid var(--ink);margin-top:18px}
+.s table{width:100%;min-width:620px;border-collapse:collapse;font-size:16px;line-height:1.45;text-align:left}
+.s th,.s td{padding:14px 16px;border-bottom:1px solid var(--line);border-left:1px solid var(--line);vertical-align:top}
+.s th:first-child{border-left:0;width:22%}
+.s tbody tr:last-child > *{border-bottom:0}
+.s thead th{padding-block:9px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom-color:var(--ink)}
+.small{margin:18px 0 0;font-size:15px;color:var(--muted);max-width:760px}
+
+.faq .wrap{display:flex;flex-wrap:wrap;gap:32px 64px}
+.faq .big{flex:1 1 300px}
+.faq-list{flex:2 1 520px;min-width:0;border-top:1px solid var(--ink)}
+.faq-list > div{padding:22px 0 24px;border-bottom:1px solid var(--line)}
+.faq-list h3{margin:0 0 8px;font-size:20px;font-weight:600;line-height:1.3}
+.faq-list p{margin:0;max-width:680px}
+
+.connect .wrap{display:flex;flex-wrap:wrap;gap:48px 72px;padding-block:80px 88px}
+.connect-copy{flex:1 1 360px;min-width:0}
+.connect-copy > p{margin:20px 0 32px;max-width:440px;font-size:18px}
+.after{list-style:none;margin:0;padding:0;max-width:440px;border-top:1px solid var(--ink);counter-reset:n}
+.after li{position:relative;padding:14px 0 14px 40px;border-bottom:1px solid var(--line);counter-increment:n}
+.after li::before{content:counter(n);position:absolute;left:0;top:17px;font-family:var(--mono);font-size:13px;color:var(--muted)}
+.form{flex:1.3 1 440px;min-width:0;border:1px solid var(--ink);align-self:flex-start}
+.form-two{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.field{padding:14px 20px 10px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);margin:0;min-width:0}
+.form > .field,.form-two .field:last-child{border-right:0}
+.field label.cap,.field legend{display:block;padding:0;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.field input[type=text],.field input[type=email],.field input[type=tel],.field select,.field textarea{width:100%;min-height:44px;border:0;background:transparent;font:400 18px/1.5 var(--body);color:var(--ink);padding:0}
+.field textarea{margin-top:6px;font-size:17px;resize:vertical}
+fieldset.field{border-width:0 0 1px}
+.choices{display:flex;flex-wrap:wrap;gap:4px 28px;margin-top:6px}
+.choices label,.tick{display:inline-flex;align-items:center;gap:10px;min-height:44px;cursor:pointer}
+.s input[type=radio],.s input[type=checkbox]{width:20px;height:20px;margin:0;flex:none;accent-color:var(--accent)}
+.form-end{display:flex;flex-wrap:wrap;align-items:stretch;border-top:1px solid var(--ink);margin-top:-1px}
+.form-end p{flex:1 1 240px;margin:0;padding:16px 20px;font-size:14px;line-height:1.5;color:var(--muted)}
+.form-end button{flex:1 1 220px;min-height:64px;border:0;background:var(--accent);color:var(--on-accent);font:600 18px var(--body);cursor:pointer;padding:0 24px}
+.form-end button:hover{opacity:.9}
+.form-msg{margin:0;padding:14px 20px;border-top:1px solid var(--ink);font-weight:500}
+
+.about .wrap{display:flex;flex-wrap:wrap}
+.founder{flex:2 1 480px;min-width:0;padding:64px 48px 64px 0;display:flex;flex-wrap:wrap;gap:28px 36px;align-items:flex-start}
+.photo{flex:none;width:132px;height:164px;border:1px solid var(--ink);display:flex;align-items:flex-end;padding:10px;color:var(--muted);line-height:1.4;font-size:11px}
+.founder > div:last-child{flex:1 1 320px;min-width:0}
+.about h2{margin:0 0 14px;font-weight:500;color:var(--muted);font-size:13px}
+.founder .lead{margin:0 0 14px;font-size:clamp(20px,2vw,25px);line-height:1.4;max-width:620px}
+.founder p{margin:0 0 14px;max-width:620px}
+.invest{flex:1 1 300px;min-width:0;padding:64px 0 64px 32px;border-left:1px solid var(--ink)}
+.invest p{margin:0 0 16px;max-width:380px}
+@media (max-width:760px){ .nav a:not(.go){display:none} .nav a.go{border-left:0} .brand{font-size:26px} }
+@media (max-width:860px){ .founder{padding-right:0} .invest{border-left:0;border-top:1px solid var(--ink);padding:40px 0 48px} .pad{padding-block:56px 52px} .connect .wrap{padding-block:56px 60px} }
+
+.foot{background:var(--ink);color:var(--bg)}
+.foot .wrap{padding-block:40px 28px}
+.foot-brand{font-family:var(--display);font-weight:600;text-transform:uppercase;font-size:clamp(64px,17vw,250px);line-height:.8;letter-spacing:-.02em}
+.foot-brand i{color:var(--spark)}
+.foot-row{margin-top:36px;padding-top:16px;border-top:1px solid color-mix(in srgb,var(--bg) 30%,transparent);display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 32px}
+.foot-row span:last-child{display:flex;gap:24px}
+.s .foot a{color:var(--bg)}
+.ph{background:color-mix(in srgb,var(--accent) 14%,transparent);padding:0 3px}
+
+/* ---- 3D readiness line ---- */
+.rl,.rl *{box-sizing:border-box}
+.rl{position:relative;border-block:1px solid var(--ink);overflow:hidden}
+.rl-stage{position:relative;width:100%;height:clamp(600px,56vw,860px);touch-action:pan-y;cursor:grab}
+.rl-stage:active{cursor:grabbing}
+.rl-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.rl-label{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+
+.rl-title{position:absolute;left:24px;top:22px;z-index:2;max-width:340px;pointer-events:none}
+.rl-title .rl-brand{font-family:var(--display);font-weight:600;font-size:22px}
+.rl-title .rl-brand i{font-style:normal;color:var(--accent)}
+.rl-title h2{margin:10px 0 10px;font-family:var(--display);font-weight:600;text-transform:uppercase;font-size:clamp(30px,3vw,44px);line-height:1;letter-spacing:-.01em;text-wrap:balance}
+.rl-title p{margin:0;display:flex;flex-wrap:wrap;gap:4px 18px}
+
+.rl-job{position:absolute;right:24px;top:22px;z-index:2;width:332px;border:1px solid var(--ink);background:var(--bg)}
+.rl-job header{display:flex;justify-content:space-between;gap:12px;padding:9px 14px;border-bottom:1px solid var(--ink)}
+.rl-sits{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--ink)}
+.rl button{font:500 14px/1.25 var(--body);color:var(--ink);background:var(--bg);border:0;cursor:pointer;min-height:44px;padding:8px 12px;text-align:left}
+.rl button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.rl button:focus-visible{outline:2px solid var(--accent);outline-offset:-3px}
+.rl-sits button{border-bottom:1px solid var(--line);border-right:1px solid var(--line)}
+.rl-sits button:nth-child(2n){border-right:0}
+.rl-sits button:nth-last-child(-n+2){border-bottom:0}
+.rl-job section{padding:12px 14px 14px;border-bottom:1px solid var(--line)}
+.rl-job h3{margin:5px 0 5px;font-family:var(--display);font-weight:600;font-size:23px;line-height:1.1}
+.rl-job p{margin:0;font-size:15px}
+.rl-result{padding:12px 14px 13px;background:var(--ink);color:var(--bg);display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.rl-result .rl-label{color:var(--bg);opacity:.75}
+.rl-result strong{display:block;margin-top:2px;font-family:var(--display);font-weight:600;font-size:23px;line-height:1.08;text-transform:uppercase}
+.rl-result.is-hold{background:var(--accent);color:var(--on-accent)}
+.rl-result.is-hold .rl-label{color:var(--on-accent)}
+.rl .rl-again{flex:none;min-height:44px;border:1px solid currentColor;background:transparent;color:inherit;padding:6px 12px}
+
+.rl-bar{position:absolute;bottom:20px;z-index:2;display:flex;align-items:stretch;border:1px solid var(--ink);background:var(--bg)}
+.rl-bar > span{display:flex;align-items:center;padding:0 12px;border-right:1px solid var(--ink)}
+.rl-bar button{border-right:1px solid var(--line);padding:8px 14px}
+.rl-bar button:last-child{border-right:0}
+.rl-modes{left:24px}
+.rl-views{right:24px}
+.rl-hint{position:absolute;left:50%;bottom:34px;transform:translateX(-50%);z-index:1;pointer-events:none;white-space:nowrap}
+
+.rl-tag{position:absolute;left:0;top:0;z-index:1;white-space:nowrap;pointer-events:none;border:1px solid var(--ink);background:var(--bg);color:var(--ink);padding:4px 8px 5px;line-height:1.25;will-change:transform}
+.rl-tag b{display:block;font-family:var(--mono);font-weight:500;font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.rl-tag span{font-size:13px;font-weight:500}
+.rl-tag span:empty{display:none}
+.rl-tag.is-hold{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.rl-tag.is-hold b{color:var(--on-accent)}
+
+.rl-cover{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;background:var(--bg)}
+.rl-cover ul{list-style:none;margin:0;padding:0;width:min(420px,100%);text-align:left;border-top:1px solid var(--ink)}
+.rl-cover li{display:grid;grid-template-columns:120px 1fr;padding:10px 0;border-bottom:1px solid var(--line)}
+.rl-cover li.is-hold span{color:var(--accent);font-weight:600}
+.rl-cover .rl-again{color:var(--ink)}
+
+@media (max-width:980px){
+  .rl-title,.rl-job,.rl-bar{position:static;width:auto;max-width:none}
+  .rl-title{padding:22px 16px 18px;pointer-events:auto}
+  .rl-job{border-inline:0}
+  .rl-stage{height:min(92vw,520px)}
+  .rl-bar{border-inline:0;border-bottom:0;flex-wrap:wrap}
+  .rl-bar > span{flex:1 0 100%;padding:8px 14px;border-right:0;border-bottom:1px solid var(--line)}
+  .rl-bar button{flex:1 1 auto;text-align:center}
+  .rl-hint{bottom:10px}
+  .rl-tag span{display:none}
+  .rl-tag.is-hold span{display:inline}
+}
+.rl{border-top:0}
+</style>
+</head>
+<body>
+<div class="s">
+<div class="strip mono"><div class="wrap"><span>Planned maintenance readiness</span><span>Prototype in development</span><span>For factory teams in India</span></div></div>
+
+<header class="band top"><div class="wrap">
+  <a class="brand" href="#top">Schdul<i>.</i></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="#problem"><span>1</span>Problem</a>
+    <a href="#approach"><span>2</span>Approach</a>
+    <a href="#readiness-line"><span>3</span>Try it</a>
+    <a href="#questions"><span>4</span>Questions</a>
+    <a class="go" href="#connect"><span>5</span>Talk to us</a>
+  </nav>
+</div></header>
+
+<main id="top">
+<section class="band hero"><div class="wrap">
+  <div class="hero-copy">
+    <h1><span class="eyebrow" style="margin-bottom:22px">Maintenance readiness software for factories</span>Machine stopped.<br>Parts <em>missing?</em></h1>
+    <p>We’re building Schdul to flag missing parts and unconfirmed technician availability before a planned shutdown begins, not after the machine is already down.</p>
+    <div class="cta-row">
+      <a class="btn" href="#connect">Tell us about one recent job
+        <svg aria-hidden="true" width="14" height="16" viewBox="0 0 14 16" fill="none" stroke="var(--spark)" stroke-width="2"><path d="M7 1v13M1.5 8.5 7 14l5.5-5.5"/></svg></a>
+      <span>About <mark class="ph">[20]</mark> minutes. No presentation, no confidential records.</span>
+    </div>
+  </div>
+  <div class="sheet" role="img" aria-label="Illustration of a readiness check: parts not confirmed by stores, technician available, production window agreed. Supervisor review is on hold.">
+    <div class="sheet-head mono"><span>Readiness check</span><span class="muted">Illustration</span></div>
+    <div class="row cols"><span>Check</span><span>Confirmed by</span><span>Status</span></div>
+    <div class="row hold"><span>Parts</span><span>Stores</span><span><svg aria-hidden="true" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="7" r="5.5" stroke-dasharray="3 2.5"/></svg>Not confirmed</span></div>
+    <div class="row"><span>Technician</span><span>Supervisor</span><span><svg aria-hidden="true" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 7.5 5.5 11 12 3.5"/></svg>Available</span></div>
+    <div class="row last"><span>Production</span><span>Shift in-charge</span><span><svg aria-hidden="true" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 7.5 5.5 11 12 3.5"/></svg>Window agreed</span></div>
+    <div class="sheet-foot"><span class="mono muted" style="font-size:11px">Supervisor review</span><b>On hold: stores to confirm the bearing</b></div>
+  </div>
+</div></section>
+
+<section class="band answer" aria-labelledby="short"><div class="wrap">
+  <h2 id="short" class="mono" style="font-size:13px">What is maintenance readiness?</h2>
+  <p>Maintenance readiness means confirming, before a planned job begins, that three things are true at the same time: the required parts are physically set aside for this job, the assigned technician is free to do it, and production has agreed to hand over the machine.</p>
+</div></section>
+
+<section id="problem"><div class="wrap" style="padding-top:80px">
+  <div class="split">
+    <h2 class="big"><span class="eyebrow">1 / The problem</span>What holds up a planned maintenance job?</h2>
+    <p>The plan is agreed. Then something changes on the floor, and the record does not catch up until the machine is already stopped.</p>
+  </div>
+  <div class="grid3">
+    <article><h3 class="h3">The part was used elsewhere.</h3>
+      <dl class="pair"><dt>Record</dt><dd>Bearing shows as in stock.</dd><dt class="floor">Floor</dt><dd class="floor">Another repair already used it.</dd></dl></article>
+    <article><h3 class="h3">The technician is on a breakdown.</h3>
+      <dl class="pair"><dt>Record</dt><dd>On shift and assigned to the job.</dd><dt class="floor">Floor</dt><dd class="floor">Pulled onto an urgent breakdown.</dd></dl></article>
+    <article><h3 class="h3">Production needs the machine.</h3>
+      <dl class="pair"><dt>Record</dt><dd>Maintenance window on the schedule.</dd><dt class="floor">Floor</dt><dd class="floor">The production plan changed this morning.</dd></dl></article>
+  </div>
+</div></section>
+<div class="band ask"><div class="wrap"><p>Does this happen at your factory, or is the problem different?</p><a href="#connect">Tell us about one recent job</a></div></div>
+
+<section id="approach" class="band"><div class="wrap pad">
+  <h2 class="big" style="max-width:900px"><span class="eyebrow">2 / What we’re building</span>Know what is missing before work begins.</h2>
+  <p style="margin:20px 0 0;max-width:640px;font-size:18px">Schdul is maintenance readiness software in development for factory teams. It brings planned maintenance requirements, spare parts status, technician availability and production handover confirmations into one view.</p>
+  <ol class="steps">
+    <li><b>Gather</b><p>Job requirements, parts information and team confirmations for one planned job.</p></li>
+    <li><b>Check</b><p>Find confirmations that are missing, or that something on the floor has since made out of date.</p></li>
+    <li><b>Review</b><p>Show the supervisor what still needs checking. The supervisor decides whether the job goes ahead.</p></li>
+  </ol>
+  <h3 class="h3" style="font-size:30px">How is this different from a CMMS or ERP?</h3>
+  <div class="tablebox"><table>
+    <thead><tr><th scope="col">Question</th><th scope="col">Your CMMS or ERP</th><th scope="col">What Schdul is being built to add</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Parts</th><td>Holds the stock record.</td><td>Asks stores to confirm the part is set aside for this job.</td></tr>
+      <tr><th scope="row">Technician</th><td>Holds the assignment and shift.</td><td>Flags when a breakdown has taken them off the planned job.</td></tr>
+      <tr><th scope="row">Production</th><td>Holds the maintenance schedule.</td><td>Asks production to reconfirm the handover window.</td></tr>
+      <tr><th scope="row">Authority</th><td>Stays the system of record.</td><td>Replaces nothing. The supervisor still approves the job.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">First prototype in development. Connections to existing systems are being explored, not finished. Schdul supports readiness checks, not machine control or safety isolation.</p>
+</div></section>
+
+<section class="rl" id="readiness-line">
+  <div class="rl-title">
+    <h2><span class="rl-label" style="display:block;margin-bottom:10px;font-size:13px">3 / Try it</span>What if the plan changes?</h2>
+    <p class="rl-label"><span>5 modules / 1 job</span><span>Illustration only</span></p>
+  </div>
+
+  <div class="rl-stage" id="rl-stage" role="img" aria-label="A 3D model of one machine with five modules in a row: job, parts, technician, production and supervisor review. A job card travels along it and stops at the module whose check is not confirmed.">
+    <canvas id="rl-canvas" aria-hidden="true"></canvas>
+    <div class="rl-cover" id="rl-cover">
+      <div class="rl-label" id="rl-cover-text">Assembling the line</div>
+      <ul id="rl-list" hidden>
+        <li data-k="parts"><b>Parts</b><span></span></li>
+        <li data-k="tech"><b>Technician</b><span></span></li>
+        <li data-k="prod"><b>Production</b><span></span></li>
+      </ul>
+      <button type="button" class="rl-again" id="rl-retry" hidden>Try again</button>
+    </div>
+    <div class="rl-hint rl-label" id="rl-hint" hidden>Rotate. Zoom. Explore.</div>
+  </div>
+
+  <aside class="rl-job" aria-label="Job reading">
+    <header class="rl-label"><span>Planned job</span><span>CNC machine service</span></header>
+    <div class="rl-sits" role="group" aria-label="Situation">
+      <button type="button" data-sc="part" aria-pressed="true">Part not ready</button>
+      <button type="button" data-sc="tech" aria-pressed="false">Technician reassigned</button>
+      <button type="button" data-sc="prod" aria-pressed="false">Production needs the machine</button>
+      <button type="button" data-sc="ok" aria-pressed="false">All checks confirmed</button>
+    </div>
+    <div aria-live="polite">
+      <section>
+        <div class="rl-label" style="color:var(--accent)">What changed</div>
+        <h3 id="rl-what"></h3>
+        <p id="rl-body"></p>
+      </section>
+      <section>
+        <div class="rl-label">Next check</div>
+        <p id="rl-next" style="margin-top:4px;font-weight:500"></p>
+      </section>
+      <div class="rl-result" id="rl-result">
+        <div><span class="rl-label">Supervisor review</span><strong id="rl-result-text"></strong></div>
+        <button type="button" class="rl-again" id="rl-again">Run again</button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="rl-bar rl-modes" role="group" aria-label="Mode">
+    <span class="rl-label">Mode</span>
+    <button type="button" data-mode="assembled" aria-pressed="true">Assembled</button>
+    <button type="button" data-mode="cutaway" aria-pressed="false">Cutaway</button>
+    <button type="button" data-mode="stations" aria-pressed="false">Stations</button>
+    <button type="button" data-mode="job" aria-pressed="false">One job</button>
+  </div>
+  <div class="rl-bar rl-views" role="group" aria-label="View">
+    <span class="rl-label">View</span>
+    <button type="button" data-view="overview" aria-pressed="true">Overview</button>
+    <button type="button" data-view="side" aria-pressed="false">Side</button>
+    <button type="button" data-view="top" aria-pressed="false">Top</button>
+    <button type="button" data-view="station" aria-pressed="false">Station</button>
+    <button type="button" data-view="flight" aria-pressed="false">Flight</button>
+  </div>
+</section>
+<script>
+(function () {
+  'use strict';
+  var LIBS = [
+    'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',
+    'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js'
+  ];
+
+  /* ---------- content ---------- */
+  var SC = {
+    part: { parts: ['Not confirmed by stores', 1], tech: ['Confirmed by supervisor', 0], prod: ['Window confirmed', 0], hold: 1,
+      result: 'On hold: parts', what: 'The bearing was used elsewhere.',
+      body: 'Stock shows the bearing as available, but last night’s repair took it.',
+      next: 'Stores confirms a bearing is set aside for this job.' },
+    tech: { parts: ['Confirmed by stores', 0], tech: ['Reassigned to a breakdown', 1], prod: ['Window confirmed', 0], hold: 2,
+      result: 'On hold: technician', what: 'The technician is on a breakdown.',
+      body: 'They are on shift and were confirmed earlier, then sent to another line.',
+      next: 'The supervisor confirms who will do the planned job.' },
+    prod: { parts: ['Confirmed by stores', 0], tech: ['Confirmed by supervisor', 0], prod: ['Window withdrawn', 1], hold: 3,
+      result: 'On hold: production', what: 'Production needs the machine.',
+      body: 'The production plan changed this morning. The schedule still shows the old window.',
+      next: 'Production agrees a new handover window.' },
+    ok: { parts: ['Confirmed by stores', 0], tech: ['Confirmed by supervisor', 0], prod: ['Window confirmed', 0], hold: -1,
+      result: 'Ready for review', what: 'Nothing is outstanding.',
+      body: 'Stores, the supervisor and production have each confirmed. The job is ready to be reviewed, not yet approved.',
+      next: 'The authorised supervisor reviews the job and decides.' }
+  };
+  var STN = [
+    { name: 'Job', key: null, h: 2.3 }, { name: 'Parts', key: 'parts', h: 2.9 }, { name: 'Technician', key: 'tech', h: 2.8 },
+    { name: 'Production', key: 'prod', h: 3.2 }, { name: 'Supervisor review', key: null, h: 3.7 }
+  ];
+  var sit = 'part', mode = 'assembled', view = 'overview', line = null;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var stage = $('rl-stage');
+  function all(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+  function press(sel, attr, val) { all(sel).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute(attr) === val ? 'true' : 'false'); }); }
+
+  // The reading panel. `done` is false while the job card is still travelling.
+  function reading(done) {
+    var s = SC[sit];
+    $('rl-what').textContent = done ? s.what : 'Checking the job…';
+    $('rl-body').textContent = done ? s.body : 'The job card is moving through parts, technician and production.';
+    $('rl-next').textContent = done ? s.next : 'Waiting for the checks.';
+    $('rl-result-text').textContent = done ? s.result : 'Checking';
+    $('rl-result').classList.toggle('is-hold', done && s.hold >= 0);
+    all('#rl-list li').forEach(function (li) {
+      var k = li.getAttribute('data-k');
+      li.lastElementChild.textContent = s[k][0];
+      li.classList.toggle('is-hold', !!s[k][1]);
+    });
+  }
+  function setSit(k) { sit = k; press('.rl-sits button', 'data-sc', k); if (line) line.run(); else reading(true); }
+  function setMode(m) { mode = m; press('.rl-modes button', 'data-mode', m); if (line) line.mode(); }
+  function setView(v) { view = v; press('.rl-views button', 'data-view', v); if (line) line.view(true); }
+  all('.rl-sits button').forEach(function (b) { b.addEventListener('click', function () { setSit(b.getAttribute('data-sc')); }); });
+  all('.rl-modes button').forEach(function (b) { b.addEventListener('click', function () { setMode(b.getAttribute('data-mode')); }); });
+  all('.rl-views button').forEach(function (b) { b.addEventListener('click', function () { setView(b.getAttribute('data-view')); }); });
+  $('rl-again').addEventListener('click', function () { if (line) line.run(); });
+  $('rl-retry').addEventListener('click', boot);
+  reading(true);
+
+  /* ---------- load the 3D library when the stage is near the screen ---------- */
+  function fail() {
+    $('rl-cover').hidden = false;
+    $('rl-cover-text').textContent = 'Could not start the 3D scene. The checks for this job are listed here.';
+    $('rl-list').hidden = false; $('rl-retry').hidden = false;
+  }
+  function boot() {
+    $('rl-cover-text').textContent = 'Assembling the line';
+    $('rl-list').hidden = true; $('rl-retry').hidden = true;
+    var i = 0;
+    (function next() {
+      if (i === LIBS.length || (i === 0 && window.THREE && window.THREE.OrbitControls)) return start();
+      if (i === 0 && window.THREE) { i = 1; }
+      var s = document.createElement('script'); s.src = LIBS[i++]; s.onload = next; s.onerror = fail; document.head.appendChild(s);
+    })();
+  }
+  function start() {
+    try { line = build(window.THREE); } catch (e) { line = null; return fail(); }
+    $('rl-cover').hidden = true; $('rl-hint').hidden = false;
+    line.mode(); line.view(false); line.run();
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (e) { if (e[0].isIntersecting) { io.disconnect(); boot(); } }, { rootMargin: '400px' });
+    io.observe(stage);
+  } else { boot(); }
+
+  /* ---------- the machine ---------- */
+  function build(THREE) {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var renderer = new THREE.WebGLRenderer({ canvas: $('rl-canvas'), antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(30, 1.6, 0.1, 200);
+    var controls = new THREE.OrbitControls(camera, stage);
+    controls.enableDamping = true; controls.dampingFactor = 0.08; controls.enablePan = false;
+    controls.minDistance = 6; controls.maxDistance = 60; controls.maxPolarAngle = Math.PI * 0.495;
+    controls.touches = { ONE: null, TWO: THREE.TOUCH.DOLLY_ROTATE }; // one finger scrolls the page
+
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x8a8a8a, 0.72));
+    var sun = new THREE.DirectionalLight(0xffffff, 0.75);
+    sun.position.set(-7, 14, 9); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
+    sun.shadow.camera.left = -13; sun.shadow.camera.right = 13; sun.shadow.camera.top = 9; sun.shadow.camera.bottom = -9; sun.shadow.camera.far = 50;
+    sun.shadow.bias = -0.0005; sun.shadow.radius = 4;
+    scene.add(sun);
+
+    var std = function (o) { return new THREE.MeshStandardMaterial(Object.assign({ roughness: 0.82, metalness: 0.02 }, o || {})); };
+    var MAT = { base: std(), dark: std({ roughness: 0.6 }), hot: std({ roughness: 0.5 }), metal: std({ roughness: 0.3, metalness: 0.7 }), bin: std(),
+      floor: new THREE.ShadowMaterial({ opacity: 0.2 }) };
+    var shell = [], trim = [], edge = [], lamp = [], i;
+    for (i = 0; i < 5; i++) {
+      shell.push(std({ transparent: true })); trim.push(std({ transparent: true, roughness: 0.6 }));
+      edge.push(new THREE.LineBasicMaterial({ transparent: true, opacity: 0 })); lamp.push(std({ roughness: 0.4 }));
+    }
+    var stack = [std(), std(), std()];
+    var C = {};
+    function css(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+    function paint() {
+      C.body = css('--m-body'); C.dark = css('--m-dark'); C.hot = css('--m-hot'); C.idle = css('--m-idle');
+      shell.forEach(function (m) { m.color.set(C.body); }); trim.forEach(function (m) { m.color.set(C.dark); });
+      edge.forEach(function (m) { m.color.set(css('--ink')); });
+      MAT.base.color.set(css('--m-base')); MAT.dark.color.set(C.dark); MAT.hot.color.set(C.hot); MAT.metal.color.set('#77756d');
+      MAT.bin.color.set(C.idle); MAT.floor.opacity = parseFloat(css('--m-shadow')) || 0.2;
+      lamps();
+    }
+
+    function put(geo, mat, parent, x, y, z) { var m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.castShadow = true; m.receiveShadow = true; parent.add(m); return m; }
+    function B(w, h, d) { return new THREE.BoxGeometry(w, h, d); }
+    function cyl(r1, r2, h, n) { return new THREE.CylinderGeometry(r1, r2, h, n || 24); }
+
+    // ground and base slab
+    var floor = new THREE.Mesh(new THREE.PlaneGeometry(80, 80), MAT.floor); floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+    var base = put(B(14, 0.3, 3.4), MAT.base, scene, 0, 0.15, 0);
+    var rail = put(B(13.6, 0.1, 0.34), MAT.dark, scene, 0, 0.35, 1.42);
+
+    var mods = [];
+    function module(n) {
+      var g = new THREE.Group(); g.userData.i = n; scene.add(g);
+      var s = new THREE.Group(), inner = new THREE.Group(); g.add(s); g.add(inner);
+      mods.push({ g: g, x: (n - 2) * 2.7, y: 0 });
+      return {
+        g: g, inner: inner,
+        shell: function (geo, x, y, z) { var m = put(geo, shell[n], s, x, y, z); var l = new THREE.LineSegments(new THREE.EdgesGeometry(geo, 30), edge[n]); m.add(l); return m; },
+        trim: function (geo, x, y, z) { return put(geo, trim[n], s, x, y, z); },
+        lamp: function (x) { var m = put(cyl(0.11, 0.11, 0.06), lamp[n], g, x, 0.62, 1.03); m.rotation.x = Math.PI / 2; m.castShadow = false; }
+      };
+    }
+    var m, k, o;
+
+    // 0 Job: an intake desk with a sloped top and a slot for the job card
+    m = module(0);
+    m.shell(B(2.2, 1.0, 2.0), 0, 0.8, 0);
+    m.shell(B(2.2, 1.0, 0.7), 0, 1.8, -0.65);
+    o = m.shell(B(2.2, 0.1, 1.45), 0, 1.62, 0.36); o.rotation.x = 0.42;
+    m.trim(B(1.2, 0.05, 0.1), 0, 1.95, -0.28);
+    for (k = 0; k < 3; k++) put(B(0.9, 0.05, 0.6), k === 2 ? MAT.hot : MAT.dark, m.inner, 0, 0.5 + k * 0.09, 0);
+    m.lamp(-0.85);
+
+    // 1 Parts: a stores cabinet with drawers; inside, shelves, bins and the bearing
+    m = module(1);
+    m.shell(B(2.2, 2.6, 2.0), 0, 1.6, 0);
+    for (k = 0; k < 9; k++) {
+      m.shell(B(0.62, 0.5, 0.05), (k % 3 - 1) * 0.7, 1.25 + Math.floor(k / 3) * 0.6, 1.02);
+      m.trim(B(0.26, 0.04, 0.04), (k % 3 - 1) * 0.7, 1.4 + Math.floor(k / 3) * 0.6, 1.06);
+    }
+    [1.0, 1.75, 2.45].forEach(function (y) { put(B(1.9, 0.06, 1.6), MAT.dark, m.inner, 0, y, 0); });
+    [[-0.6, 1.0, 0.3], [0.1, 1.0, -0.2], [0.65, 1.0, 0.35], [-0.55, 1.75, -0.2], [-0.3, 2.45, 0.2], [0.5, 2.45, -0.1]].forEach(function (b) { put(B(0.45, 0.34, 0.5), MAT.bin, m.inner, b[0], b[1] + 0.2, b[2]); });
+    var bearing = put(new THREE.TorusGeometry(0.26, 0.1, 14, 32), MAT.metal, m.inner, 0.4, 1.88, 0.4); bearing.rotation.x = Math.PI / 2;
+    var bearingGap = put(new THREE.TorusGeometry(0.28, 0.018, 8, 40), MAT.hot, m.inner, 0.4, 1.8, 0.4); bearingGap.rotation.x = Math.PI / 2; bearingGap.castShadow = false;
+    m.lamp(-0.85);
+
+    // 2 Technician: a bay with a barrel roof; inside, the technician and a tool trolley
+    m = module(2);
+    m.shell(B(2.2, 1.5, 2.0), 0, 1.05, 0);
+    o = m.shell(new THREE.CylinderGeometry(1.0, 1.0, 2.2, 32, 1, false, 0, Math.PI), 0, 1.8, 0); o.rotation.z = Math.PI / 2;
+    m.trim(B(0.9, 1.15, 0.04), 0.3, 0.9, 1.02);
+    var person = new THREE.Group(); person.position.set(-0.2, 0.3, 0.1); m.inner.add(person);
+    put(cyl(0.2, 0.27, 1.0), MAT.dark, person, 0, 0.5, 0); put(new THREE.SphereGeometry(0.2, 20, 14), MAT.dark, person, 0, 1.22, 0);
+    put(B(0.6, 0.6, 0.45), MAT.bin, m.inner, 0.6, 0.6, 0.3);
+    var personGap = put(new THREE.TorusGeometry(0.42, 0.018, 8, 40), MAT.hot, m.inner, -0.2, 0.33, 0.1); personGap.rotation.x = Math.PI / 2; personGap.castShadow = false;
+    m.lamp(-0.85);
+
+    // 3 Production: a low block carrying the handover clock; inside, the machine being handed over
+    m = module(3);
+    m.shell(B(2.2, 1.3, 2.0), 0, 0.95, 0);
+    o = m.shell(cyl(0.8, 0.8, 0.3, 48), 0, 2.4, 0.2); o.rotation.x = Math.PI / 2;
+    o = m.trim(new THREE.TorusGeometry(0.62, 0.03, 8, 48), 0, 2.4, 0.36);
+    var hands = new THREE.Group(); hands.position.set(0, 2.4, 0.37); m.g.children[0].add(hands);
+    put(B(0.06, 0.44, 0.03), trim[3], hands, 0, 0.2, 0); o = put(B(0.06, 0.32, 0.03), trim[3], hands, 0.12, -0.08, 0); o.rotation.z = 1.0;
+    var windowArc = put(new THREE.TorusGeometry(0.62, 0.06, 8, 24, Math.PI * 0.5), MAT.hot, m.g.children[0], 0, 2.4, 0.37);
+    put(B(1.1, 0.55, 0.8), MAT.bin, m.inner, -0.1, 0.58, 0); put(B(0.4, 0.3, 0.4), MAT.dark, m.inner, 0.15, 1.0, 0);
+    m.lamp(-0.85);
+
+    // 4 Supervisor review: an open gate with a desk, a stamp and a stack light
+    m = module(4);
+    m.shell(B(0.45, 2.3, 2.0), -0.875, 1.45, 0); m.shell(B(0.45, 2.3, 2.0), 0.875, 1.45, 0); m.shell(B(2.2, 0.45, 2.0), 0, 2.825, 0);
+    put(B(0.9, 0.7, 0.8), MAT.bin, m.g, 0, 0.65, 0); put(cyl(0.12, 0.17, 0.3), MAT.dark, m.g, 0, 1.15, 0);
+    put(cyl(0.04, 0.04, 0.2, 10), MAT.dark, m.g, 0.7, 3.12, 0.6);
+    for (k = 0; k < 3; k++) put(cyl(0.15, 0.15, 0.2), stack[k], m.g, 0.7, 3.32 + k * 0.22, 0.6);
+    m.lamp(-0.875);
+
+    // the job card that travels along the rail
+    var cardMat = std({ roughness: 0.5 });
+    var card = put(B(0.62, 0.07, 0.42), cardMat, scene, -6.6, 0.44, 1.42);
+
+    /* ---------- status lamps ---------- */
+    var lampState = ['idle', 'idle', 'idle', 'idle', 'idle'], stackState = -1; // stackState: -1 off, 1 ready for review, 2 on hold
+    function lamps() {
+      lamp.forEach(function (mt, n) {
+        var st = lampState[n];
+        mt.color.set(st === 'hold' ? C.hot : st === 'ok' ? C.dark : C.idle);
+        mt.emissive.set(st === 'hold' ? C.hot : '#000000'); mt.emissiveIntensity = 0.6;
+      });
+      stack.forEach(function (mt, n) {
+        var on = stackState === n;
+        mt.color.set(on ? (n === 2 ? C.hot : '#ffffff') : C.idle);
+        mt.emissive.set(on ? (n === 2 ? C.hot : '#ffffff') : '#000000'); mt.emissiveIntensity = 0.7;
+      });
+      cardMat.color.set(stackState === 2 ? C.hot : C.dark);
+    }
+    paint();
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', paint);
+    new MutationObserver(paint).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+    /* ---------- labels ---------- */
+    var tags = STN.map(function (s) {
+      var el = document.createElement('div'); el.className = 'rl-tag'; el.innerHTML = '<b></b><span></span>';
+      el.firstChild.textContent = s.name; stage.appendChild(el); return el;
+    });
+    function tagText(n, text, hold) { tags[n].lastChild.textContent = text || ''; tags[n].classList.toggle('is-hold', !!hold); }
+
+    /* ---------- one job ---------- */
+    var job = { idx: 0, phase: 'idle', t: 0 }, focus = 0;
+    function outcome(n) { // what station n finds for the current situation
+      var s = SC[sit], key = STN[n].key;
+      if (n === 0) return ['CNC machine service', 0];
+      if (n === 4) return [s.result, s.hold >= 0];
+      return s[key];
+    }
+    function settle(n) {
+      var r = outcome(n);
+      lampState[n] = r[1] ? 'hold' : 'ok';
+      tagText(n, r[0], r[1]);
+      if (r[1] && n < 4) { job.phase = 'held'; stackState = 2; tagText(4, SC[sit].result, 1); lampState[4] = 'hold'; reading(true); }
+      else if (n === 4) { job.phase = 'done'; stackState = 1; reading(true); }
+      else { job.idx = n + 1; job.phase = 'move'; }
+      lamps();
+    }
+    function run() {
+      var s = SC[sit];
+      lampState = ['idle', 'idle', 'idle', 'idle', 'idle']; stackState = -1;
+      tags.forEach(function (el, n) { tagText(n, '', 0); });
+      bearing.visible = !s.parts[1]; bearingGap.visible = !!s.parts[1];
+      person.visible = !s.tech[1]; personGap.visible = !!s.tech[1];
+      windowArc.visible = !!s.prod[1];
+      job.idx = 0; job.phase = 'move'; job.t = 0; card.position.x = mods[0].g.position.x - 1.9;
+      reading(false); lamps();
+      if (reduce) { while (job.phase === 'move') { card.position.x = mods[job.idx].x; settle(job.idx); } }
+    }
+    function stepJob(dt) {
+      if (job.phase === 'move') {
+        var tx = mods[job.idx].g.position.x, dx = tx - card.position.x, stepLen = 3.4 * dt;
+        focus = job.idx;
+        if (Math.abs(dx) <= stepLen) { card.position.x = tx; job.phase = 'check'; job.t = 0; lampState[job.idx] = 'check'; }
+        else card.position.x += dx > 0 ? stepLen : -stepLen;
+      } else if (job.phase === 'check') {
+        job.t += dt;
+        lamp[job.idx].color.set(Math.floor(job.t * 8) % 2 ? C.dark : C.idle);
+        if (job.t > 0.85) settle(job.idx);
+      } else if (job.phase === 'held') { card.position.x = mods[job.idx].g.position.x; }
+    }
+
+    /* ---------- modes and cameras ---------- */
+    var W = 1, H = 1, goalP = new THREE.Vector3(), goalT = new THREE.Vector3(), tween = false, flight = 0, follow = false;
+    function applyMode() {
+      var spread = mode === 'stations';
+      mods.forEach(function (md, n) { md.x = (n - 2) * 2.7 * (spread ? 1.36 : 1); md.y = spread ? 0.45 : 0; });
+      follow = mode === 'job';
+      if (follow && view !== 'station') { view = 'station'; press('.rl-views button', 'data-view', view); }
+      applyView(true);
+    }
+    function applyView(animate) {
+      var k = Math.max(1, 1.5 / camera.aspect) * (mode === 'stations' ? 1.25 : 1), sx = mods[focus].x;
+      flight = 0;
+      if (view === 'overview') { goalT.set(0, 1.3, 0); goalP.set(11 * k, 9 * k, 18.5 * k); }
+      else if (view === 'side') { goalT.set(0, 1.5, 0); goalP.set(0, 2.4, 29 * k); }
+      else if (view === 'top') { goalT.set(0, 0.5, 0); goalP.set(0, 31 * k, 0.02); }
+      else if (view === 'station') { goalT.set(sx, 1.5, 0); goalP.set(sx + 3.2, 3.4, 8.2 * Math.max(1, 1.1 / camera.aspect)); }
+      else { goalT.set(0, 1.3, 0); goalP.set(11 * k, 7.5 * k, 18.5 * k); flight = 1; }
+      if (animate && !reduce) tween = true; else { camera.position.copy(goalP); controls.target.copy(goalT); tween = false; }
+    }
+    controls.addEventListener('start', function () { tween = false; flight = 0; follow = false; });
+
+    // click a module to look at it
+    var ray = new THREE.Raycaster(), ptr = new THREE.Vector2(), down = null;
+    stage.addEventListener('pointerdown', function (e) { down = [e.clientX, e.clientY]; });
+    stage.addEventListener('pointerup', function (e) {
+      if (!down || Math.abs(e.clientX - down[0]) + Math.abs(e.clientY - down[1]) > 6) return;
+      var r = stage.getBoundingClientRect();
+      ptr.set((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1);
+      ray.setFromCamera(ptr, camera);
+      var hit = ray.intersectObjects(mods.map(function (md) { return md.g; }), true)[0];
+      if (!hit) return;
+      var obj = hit.object; while (obj && obj.userData.i === undefined) obj = obj.parent;
+      if (obj) { focus = obj.userData.i; view = 'station'; press('.rl-views button', 'data-view', view); applyView(true); }
+    });
+
+    function resize() {
+      W = stage.clientWidth; H = stage.clientHeight; if (!W || !H) return;
+      renderer.setSize(W, H, false); camera.aspect = W / H;
+      // on desktop the reading panel covers the right edge, so slide the picture left by half its width
+      var off = window.matchMedia('(max-width:980px)').matches ? 0 : 175;
+      if (off) camera.setViewOffset(W, H, off, -Math.round(H * 0.09), W, H); else camera.clearViewOffset();
+      camera.updateProjectionMatrix();
+    }
+    resize(); applyView(false);
+    if ('ResizeObserver' in window) new ResizeObserver(function () { resize(); }).observe(stage); else window.addEventListener('resize', resize);
+
+    var v = new THREE.Vector3(), last = performance.now(), fa = 0;
+    function frame(now) {
+      requestAnimationFrame(frame);
+      var dt = Math.min(0.1, (now - last) / 1000); last = now;
+      if (document.hidden || !W) return;
+      stepJob(dt);
+      var ease = reduce ? 1 : 0.09, op = (mode === 'cutaway' || mode === 'job') ? 0.13 : 1;
+      mods.forEach(function (md, n) {
+        md.g.position.x += (md.x - md.g.position.x) * ease; md.g.position.y += (md.y - md.g.position.y) * ease;
+        shell[n].opacity += (op - shell[n].opacity) * ease; trim[n].opacity = shell[n].opacity;
+        shell[n].depthWrite = trim[n].depthWrite = shell[n].opacity > 0.6; edge[n].opacity = 0.55 * (1 - shell[n].opacity);
+      });
+      var stretch = (mods[4].g.position.x - mods[0].g.position.x) / 10.8;
+      rail.scale.x = stretch; base.scale.x = stretch;
+      if (follow) { goalT.set(card.position.x, 1.5, 0); goalP.set(card.position.x + 3.2, 3.4, 8.2 * Math.max(1, 1.1 / camera.aspect)); tween = !reduce; if (reduce) { camera.position.copy(goalP); controls.target.copy(goalT); } }
+      if (flight && !reduce) { fa += dt * 0.16; var R = goalP.length(); camera.position.set(Math.sin(fa + 0.5) * R * 0.86, goalP.y + Math.sin(fa * 0.7) * 1.2, Math.cos(fa + 0.5) * R * 0.86); controls.target.lerp(goalT, 0.1); }
+      else if (tween) { camera.position.lerp(goalP, 0.07); controls.target.lerp(goalT, 0.07); if (!follow && camera.position.distanceTo(goalP) < 0.02) tween = false; }
+      controls.update();
+      renderer.render(scene, camera);
+
+      var placed = [];
+      [4, 3, 2, 1, 0].sort(function (a, b) { return (tags[b].classList.contains('is-hold') ? 1 : 0) - (tags[a].classList.contains('is-hold') ? 1 : 0); }).forEach(function (n) {
+        var el = tags[n], w = el.offsetWidth, h = el.offsetHeight, half = w / 2 + 6, t, q, hit;
+        v.set(mods[n].g.position.x, mods[n].g.position.y + STN[n].h + 0.45, 0).project(camera);
+        var px = Math.max(half, Math.min(W - half, (v.x * 0.5 + 0.5) * W)), py = Math.max(h + 6, Math.min(H - 6, (-v.y * 0.5 + 0.5) * H));
+        for (t = 0; t < 5; t++) {
+          hit = null;
+          for (q = 0; q < placed.length; q++) if (px - w / 2 < placed[q].r + 4 && px + w / 2 > placed[q].l - 4 && py - h < placed[q].b + 4 && py > placed[q].t - 4) { hit = placed[q]; break; }
+          if (!hit) break;
+          py = hit.t - h - 5 > 0 ? hit.t - 5 : hit.b + h + 5;
+        }
+        placed.push({ l: px - w / 2, r: px + w / 2, t: py - h, b: py });
+        el.style.transform = 'translate(' + px.toFixed(1) + 'px,' + py.toFixed(1) + 'px) translate(-50%,-100%)';
+        el.style.visibility = v.z > 1 ? 'hidden' : 'visible';
+      });
+    }
+    requestAnimationFrame(frame);
+    return { run: run, mode: applyMode, view: applyView };
+  }
+})();
+</script>
+
+<section id="questions" class="band faq"><div class="wrap pad">
+  <h2 class="big"><span class="eyebrow">4 / Questions</span>Asked plainly.</h2>
+  <div class="faq-list">
+    <div><h3>How is Schdul different from a CMMS or ERP?</h3><p>A CMMS or ERP stays the system of record for work orders, stock and schedules. Schdul is being built to sit alongside it and check, close to the job, whether those records still hold, and to show who needs to reconfirm what. It does not replace either system.</p></div>
+    <div><h3>Can I use Schdul today?</h3><p>Not yet. The first prototype is in development. Right now we are talking to factory teams about how they check readiness, and those conversations decide what gets built first.</p></div>
+    <div><h3>Does Schdul control machines or replace lockout/tagout?</h3><p>No. Schdul supports readiness checks and supervisor review. It does not control machines, isolate energy or replace your lockout/tagout and permit procedures.</p></div>
+    <div><h3>Who decides that a job can start?</h3><p>Your authorised supervisor. When every check is confirmed, the job is marked ready for supervisor review. It is not approved automatically.</p></div>
+    <div><h3>What do you need from me?</h3><p>One recent planned maintenance job: what was planned, what changed and how your team handled it. No presentation and no confidential records.</p></div>
+    <p style="margin:20px 0 0;font-size:16px">Planning a job this month? <a href="https://schdul.in/planned-maintenance-readiness-checklist/" style="font-weight:500">Read the planned maintenance readiness checklist</a></p>
+  </div>
+</div></section>
+
+<section id="connect" class="band connect"><div class="wrap">
+  <div class="connect-copy">
+    <h2 class="big"><span class="eyebrow">5 / Talk to us</span>Tell us about one recent job.</h2>
+    <p>Your current process might already cover this. We’d like to understand that too.</p>
+    <ol class="after">
+      <li>You leave your details here.</li>
+      <li>Chaitanya contacts you within <mark class="ph">[2 working days]</mark> to fix a time.</li>
+      <li>We talk for about <mark class="ph">[20]</mark> minutes, in <mark class="ph">[English, Hindi or Gujarati]</mark>.</li>
+      <li>If you want it, you get the prototype to try before anyone else.</li>
+    </ol>
+  </div>
+  <form class="form" id="f" novalidate>
+    <div class="sheet-head mono"><span>Your details</span><span class="muted">3 fields required</span></div>
+    <div class="form-two">
+      <div class="field"><label class="cap" for="f-name">Your name</label><input id="f-name" name="name" type="text" autocomplete="name" maxlength="120" required></div>
+      <div class="field"><label class="cap" for="f-role">Your role</label>
+        <select id="f-role" name="role" required>
+          <option value="">Select your role</option><option>Maintenance technician</option><option>Maintenance supervisor</option><option>Maintenance planner</option><option>Production</option><option>Stores</option><option>Plant head</option><option>Factory owner</option><option>Collaborator or investor</option><option>Other</option>
+        </select></div>
+    </div>
+    <fieldset class="field"><legend>How should we contact you?</legend>
+      <div class="choices">
+        <label><input type="radio" name="contact-method" id="f-m-email" value="email" checked>Email</label>
+        <label><input type="radio" name="contact-method" id="f-m-wa" value="whatsapp">WhatsApp</label>
+        <label><input type="radio" name="contact-method" id="f-m-phone" value="phone">Phone</label>
+      </div></fieldset>
+    <div class="field"><label class="cap" for="f-contact" id="f-contact-label">Email address</label><input id="f-contact" name="contact" type="email" inputmode="email" autocomplete="email" maxlength="254" required></div>
+    <div class="field"><label class="cap" for="f-exp">What held up your last planned job? <span style="text-transform:none;letter-spacing:0">(optional)</span></label>
+      <textarea id="f-exp" name="experience" rows="3" maxlength="3000"></textarea>
+      <div style="font-size:14px;color:var(--muted)">A few lines are enough. Please leave out confidential details.</div></div>
+    <div class="field" style="padding-block:6px"><label class="tick" style="font-size:16px"><input type="checkbox" id="f-updates" name="prototype-updates">Tell me when there is a prototype to try.</label></div>
+    <div class="form-end"><p>We use your details only to arrange a conversation. <a href="https://schdul.in/privacy" style="color:inherit">Privacy</a></p><button type="submit">Send my details</button></div>
+    <p class="form-msg" id="f-msg" role="status" hidden></p>
+  </form>
+</div></section>
+
+<section id="about" class="band about"><div class="wrap">
+  <div class="founder">
+    <div class="photo mono" role="img" aria-label="Founder photo placeholder">[Photo of Chaitanya]</div>
+    <div>
+      <h2 class="mono">Who is building Schdul?</h2>
+      <p class="lead">I’m Chaitanya Joshi. I’m building Schdul because a machine shouldn’t stop for planned maintenance only for the team to find that the parts or the technician aren’t ready.</p>
+      <p><mark class="ph">[One or two lines of your background: where you have worked, what you saw on the floor that started this.]</mark></p>
+      <p style="font-size:16px;margin:0"><span style="font-weight:500;text-decoration:underline;text-underline-offset:5px">Chaitanya on LinkedIn</span> <span class="muted">· <mark class="ph">[City]</mark>, India</span></p>
+    </div>
+  </div>
+  <div class="invest">
+    <h2 class="mono">Building or investing in industrial software?</h2>
+    <p>We’re looking for collaborators and early-stage funding. If you work in this area, we’d welcome a conversation.</p>
+    <a href="#connect" style="font-weight:500;min-height:44px;display:inline-flex;align-items:center">Contact the founder</a>
+  </div>
+</div></section>
+</main>
+
+<footer class="foot"><div class="wrap">
+  <div class="foot-brand">Schdul<i>.</i></div>
+  <div class="foot-row mono"><span>© 2026 Schdul</span><span>Page last updated <mark class="ph" style="color:inherit">[date]</mark></span>
+    <span><a href="https://schdul.in/planned-maintenance-readiness-checklist/">Checklist</a><a href="https://schdul.in/privacy">Privacy</a><a href="#connect">Talk to us</a></span></div>
+</div></footer>
+</div>
+
+<script>
+(function () {
+  var f = document.getElementById('f'), c = document.getElementById('f-contact'), l = document.getElementById('f-contact-label'), msg = document.getElementById('f-msg');
+  var kept = { email: '', whatsapp: '', phone: '' }, cur = 'email';
+  var labels = { email: 'Email address', whatsapp: 'WhatsApp number', phone: 'Phone number' };
+  Array.prototype.forEach.call(f.querySelectorAll('input[name="contact-method"]'), function (r) {
+    r.addEventListener('change', function () {
+      kept[cur] = c.value; cur = r.value; c.value = kept[cur];
+      l.textContent = labels[cur]; c.type = cur === 'email' ? 'email' : 'tel'; c.inputMode = c.type; c.autocomplete = c.type;
+    });
+  });
+  f.addEventListener('submit', function (e) {
+    e.preventDefault();
+    msg.hidden = false;
+    if (!f.checkValidity()) { msg.textContent = 'Please fill in your name, role and how to reach you.'; (f.querySelector(':invalid') || c).focus(); return; }
+    msg.textContent = 'Design preview: nothing was sent. On the live site this goes to your Netlify form.';
+  });
+})();
+</script>
+</body>
+</html>
